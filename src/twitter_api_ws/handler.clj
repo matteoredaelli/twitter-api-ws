@@ -45,45 +45,22 @@
 (defapi app
   (swagger-ui)
   (swagger-docs
-    :title "Twitter-api-rest Api"
-    :description "this is Twitter-api-rest Api.")
+   :title "Twitter-api-rest Api"
+   :description "this is Twitter-api-rest Api.")
   (swaggered "twitter"
-    :description "playing with parameters"
-    (GET* "/users-show" []
-      ;;:return Result
-      :query-params [screen-name :- String]
-      :summary "Retreive info about a user"
-      (let [result (users-show :oauth-creds oauth-creds 
-                               :params {:screen-name screen-name})]
-        (ok (generate-string result))))
-    (GET* "/users-show2" []
-      ;;:return Result
-      :query-params [params :- String]
-      :summary "Retreive info about a user"
-      (let [result (users-show :oauth-creds oauth-creds 
-                               :params (parse-string params))]
-        (ok (generate-string result))))
-    (GET* "/users-show3" []
-      ;;:return Result
-      :query-params [params :- String]
-      :summary "Retreive info about a user"
-      (let [result (load-string  "(users-show :oauth-creds oauth-creds :params (parse-string params true))")]
-        (ok (generate-string result))))
-    (GET* "/twitter-api" []
-      ;;:return Result
-      :query-params [function :- String, params :- String]
-      :summary "Retreive info about a user"
-      (let [parsed-params (parse-string params true)
-            result (eval (read-string "(users-show :oauth-creds oauth-creds :params parsed-params)"))]
-        (ok (generate-string result))))
-    (POST* "/plus" []
-      ;;:return Result
-      :body-params [x :- Long, {y :- Long 1}]
-      :summary "x+y (y default to 1)"
-      (ok {:result (+ x y)}))
-    (POST* "/plus2" []
-      ;;:return Result
-      :body-params [x,y]
-      :summary "x+y (y default to 1)"
-      (ok {:result (+ x y)}))
- ))
+             :description "playing with parameters"
+
+
+             (GET* "/twitter-api" []
+                   ;;:return Result
+                   :query-params [function :- String, params :- String]
+                   :summary "Retreive info about a user"
+                   (let [rest-function (str "twitter.api.restful/" function)
+                         result (eval ((load-string rest-function) 
+                                       :oauth-creds oauth-creds 
+                                       :params (parse-string params)))]
+                     (ok (generate-string result))))
+
+             )
+  )
+    
