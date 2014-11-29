@@ -17,6 +17,7 @@
                  [metosin/compojure-api "0.13.1"]
                  [metosin/ring-http-response "0.4.0"]
                  [metosin/ring-swagger-ui "2.0.16-2"]
+                 [twitter-api-utils "0.1.0-SNAPSHOT"]
                  ;; my
                  [twitter-api "0.7.5"]
                  ;; for JSON

@@ -25,7 +25,7 @@
    [twitter.utils]
    [twitter.request]
    [twitter.api.restful]
-   [twitter.api.search]
+   [twitter-api-utils.twitter]
    [environ.core]
    )
   (:import
@@ -33,12 +33,6 @@
   )
 )
 
-(def oauth-creds (make-oauth-creds
-                  (env :twitter-app-consumer-key)
-                  (env :twitter-app-consumer-secret)
-                  (env :twitter-user-access-token)
-                  (env :twitter-user-access-token-secret)
-                  ))
 
 (s/defschema Result {:result Long})
 
@@ -61,6 +55,16 @@
                                        :params (parse-string params)))]
                      (ok (generate-string result))))
 
-             )
-  )
+             (GET* "/user-timeline" []
+                   ;;:return Result
+                   :query-params [params :- String, count :- String]
+                   :summary "Retreive info about a user"
+
+                   (let [count (Integer. (parse-string count))
+                         result (fetch-user-timeline (parse-string params) count 0 [])]
+                     (ok (generate-string result))))))
+             
+
+
+             
     
