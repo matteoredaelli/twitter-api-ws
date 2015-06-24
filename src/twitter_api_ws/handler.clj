@@ -22,9 +22,10 @@
    [twitter.callbacks]
    [twitter.callbacks.handlers]
    [twitter.api.restful]
+   [twitter.api.restful]
    [twitter.utils]
    [twitter.request]
-   [twitter.api.restful]
+   [twitter.api.search]
    [twitter-api-utils.twitter]
    [environ.core]
    )
@@ -44,11 +45,20 @@
   (swaggered "twitter"
              :description "playing with parameters"
 
+             (GET* "/search" []
+                   ;;:return Result
+                   :query-params [params :- String]
+                   :summary "Retreive info about a user"
+
+                   (let [
+                         result (twitter.api.search/search :params (parse-string params))]
+                     (ok (generate-string result))))
+
 
              (GET* "/twitter-api" []
                    ;;:return Result
                    :query-params [function :- String, params :- String]
-                   :summary "Retreive info about a user"
+                   :summary "Wrapper function"
                    (let [rest-function (str "twitter.api.restful/" function)
                          result (eval ((load-string rest-function) 
                                        :oauth-creds oauth-creds 
@@ -62,7 +72,17 @@
 
                    (let [count (Integer. (parse-string count))
                          result (fetch-user-timeline (parse-string params) count 0 [])]
-                     (ok (generate-string result))))))
+                     (ok (generate-string result))))
+
+             (GET* "/users-lookup" []
+                   ;;:return Result
+                   :query-params [params :- String]
+                   :summary "Retreive info about a user"
+                   (let [result (twitter.api.restful/users-lookup 
+                                 :oauth-creds oauth-creds 
+                                 :params (parse-string params))]
+                     (ok (generate-string result))))
+             ))
              
 
 
