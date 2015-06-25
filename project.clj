@@ -19,7 +19,7 @@
                  [metosin/ring-swagger-ui "2.0.16-2"]
                  [twitter-api-utils "0.1.0-SNAPSHOT"]
                  ;; my
-                 [twitter-api "0.7.5"]
+                 [twitter-api "0.7.8"]
                  ;; for JSON
                  ;;[org.clojure/data.json "0.2.4"]
                  [cheshire "5.3.1"]

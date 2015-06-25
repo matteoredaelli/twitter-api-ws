@@ -51,7 +51,9 @@
                    :summary "Retreive info about a user"
 
                    (let [
-                         result (twitter.api.search/search :params (parse-string params))]
+                         result (twitter.api.search/search :oauth-creds oauth-creds
+                                                           :proxy (env :http-proxy-clj)
+                                                           :params (parse-string params))]
                      (ok (generate-string result))))
 
 
@@ -61,7 +63,8 @@
                    :summary "Wrapper function"
                    (let [rest-function (str "twitter.api.restful/" function)
                          result (eval ((load-string rest-function) 
-                                       :oauth-creds oauth-creds 
+                                       :oauth-creds oauth-creds
+                                       :proxy (env :http-proxy-clj)
                                        :params (parse-string params)))]
                      (ok (generate-string result))))
 
@@ -79,7 +82,8 @@
                    :query-params [params :- String]
                    :summary "Retreive info about a user"
                    (let [result (twitter.api.restful/users-lookup 
-                                 :oauth-creds oauth-creds 
+                                 :oauth-creds oauth-creds
+                                 :proxy (env :http-proxy-clj)
                                  :params (parse-string params))]
                      (ok (generate-string result))))
              ))
